@@ -21,6 +21,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style>
+    .form-control-plaintext,th,td{
+      font-size : 0.9rem;
+    }
+  </style>
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
@@ -44,21 +49,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <li class="nav-item">
             <a href="{{ url('/')}}" class="nav-link">Home</a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Contact</a>
-          </li>
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Transaksi</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="#" class="dropdown-item">Some action </a></li>
-              <li><a href="#" class="dropdown-item">Some other action</a></li>
+              <li><a href="{{ url('/penjualan') }}" class="dropdown-item">Penjualan</a></li>
+              <li><a href="{{ url('/pembelian') }}" class="dropdown-item">Pembelian</a></li>
+              <li><a href="{{ url('/return_penjualan') }}" class="dropdown-item">Return Penjualan</a></li>
+              <li><a href="{{ url('/return_pembelian') }}" class="dropdown-item">Return Pembelian</a></li>
+              <li><a href="{{ url('/koreksi_stok') }}" class="dropdown-item">Koreksi Stok</a></li>
+              
             </ul>
           </li>
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Laporan</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="#" class="dropdown-item">Some action </a></li>
-              <li><a href="#" class="dropdown-item">Some other action</a></li>
+              <li><a href="{{ url('/laporan_penjualan') }}" class="dropdown-item">Laporan Penjualan </a></li>
+              <li><a href="{{ url('/laporan_pembelian') }}" class="dropdown-item">Laporan Pembelian </a></li>
+              <li><a href="{{ url('/laporan_return_penjualan') }}" class="dropdown-item">Laporan Return Penjualan</a></li>
+              <li><a href="{{ url('/laporan_return_pembelian') }}" class="dropdown-item">Laporan Return Pembelian</a></li>
+              <li><a href="{{ url('/laporan_koreksi_stok') }}" class="dropdown-item">Laporan Koreksi Stok</a></li>
+              <li><a href="#" class="dropdown-item">Laporan Pajak</a></li>
+              <li><a href="{{ url('/komisi_dokter') }}" class="dropdown-item">Komisi Dokter</a></li>
+              <li><a href="{{ url('/riwayat') }}" class="dropdown-item">Riwayat Sistem</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -100,8 +112,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div class="content-wrapper mt-5">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-        <div class="row mb-2">
-        </div><!-- /.row -->
     </div>
     <!-- /.content-header -->
 
@@ -127,6 +137,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- Datatables -->
@@ -136,6 +147,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
+<!-- Jquery Loading -->
+<script src="{{ asset('plugins/jquery-loading/jquery.loading.min.js') }}"></script>
+<!-- <script>
+  $("body").loading({
+    stoppable: true
+  });
+</script> -->
 @yield('konten_js')
 </body>
 </html>

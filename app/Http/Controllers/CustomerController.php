@@ -12,23 +12,17 @@ class CustomerController extends Controller
         return datatables()->of(Customer::query())->toJson();
     }
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $customer =  Customer::all();
         return view('modules/customer/v_index',['customer'=> $customer]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    function plainData(){
+        return $customer = Customer::get();
+    }
+    
     public function store(Request $request)
     {
         $id = $request->id_;
@@ -44,12 +38,19 @@ class CustomerController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
+    function saveCustomerReturnID(Request $request){
+        $array_data = [
+            'nama' => $request->nama_customer, 
+            'no_hp' => $request->no_hp_customer
+        ];
+
+        if($data = Customer::create($array_data)){
+            return $data->id;
+        }else{
+            return "0";
+        }
+    }
+    
     public function edit($id)
     {
         $where = array('id' => $id);
@@ -57,13 +58,7 @@ class CustomerController extends Controller
  
         return Response::json($data);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         $data = Customer::where('id',$id)->delete();
