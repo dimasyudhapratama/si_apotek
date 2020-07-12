@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -106,7 +106,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'id_ID',
 
     /*
     |--------------------------------------------------------------------------
@@ -231,6 +231,8 @@ return [
 
         //Yajra Datatables
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        //Auto Number
+        Alfa6661\AutoNumber\AutoNumberServiceProvider::class,
     ],
 
 ];
