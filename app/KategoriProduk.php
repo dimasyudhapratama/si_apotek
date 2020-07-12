@@ -8,4 +8,5 @@ class KategoriProduk extends Model
 {
     protected $table = 'kategori_produk';
     protected $fillable = ['nama_kategori'];
+    public $timestamps = false;
 }
