@@ -18,8 +18,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $supplier =  Supplier::all();
-        return view('modules/supplier/v_index',['supplier'=> $supplier]);
+        return view('modules/supplier/v_index');
     }
 
     /**
