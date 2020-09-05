@@ -54,243 +54,176 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Kode Produk</small>
-                            <input type="text" name="id_" id="id_" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Nama Kategori</small>
-                            <select name="kategori" id="kategori" class="form-control form-control-sm">
-                                <option value="">--Pilih--</option>
-                                @foreach($kategori_produk as $i)
-                                <option value="{{ $i->id }}">{{ $i->nama_kategori }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Nama Produk</small>
-                            <input type="text" name="nama_produk" id="nama_produk" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Stok Minimal</small>
-                            <input type="number" name="stok_minimal" id="stok_minimal" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Harga Beli</small>
-                            <input type="number" name="harga_beli" id="harga_beli" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Produsen</small>
-                            <select name="produsen" id="produsen" class="form-control form-control-sm">
-                                <option value="">--Pilih--</option>
-                                @foreach($produsen as $i)
-                                <option value="{{ $i->id }}">{{ $i->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Supplier</small>
-                            <select name="supplier" id="supplier" class="form-control form-control-sm">
-                                <option value="">--Pilih--</option>
-                                @foreach($supplier as $i)
-                                <option value="{{ $i->id }}">{{ $i->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Level Satuan</small>
-                            <select name="level_satuan" id="level_satuan" class="form-control form-control-sm" onchange="ubahLevelSatuan()">
-                                <option value="1">Level 1</option>
-                                <option value="2">Level 2</option>
-                                <option value="3">Level 3</option>
-                                <option value="4">Level 4</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <small class="font-weight-bold">Margin Pajak(10%)</small>
-                            <select name="margin_pajak" id="margin_pajak" class="form-control form-control-sm" onchange="ubahHargaBeli()">
-                                <option value="1">Ya</option>
-                                <option value="0">Tidak</option>
-                            </select>
-                        </div>
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
-                        
+                <div class="row">
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Kode Produk</small>
+                        <input type="hidden" name="id_" id="id_" class="form-control form-control-sm">
+                        <input type="text" name="kode_produk" id="kode_produk" class="form-control form-control-sm">
                     </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <small class="font-weight-bold">Tipe Satuan</small>
-                        </div>
-                        <div class="col-md-2">
-                            <small class="font-weight-bold">Nilai Konversi</small>
-                        </div>
-                        <div class="col-md-2">
-                            <small class="font-weight-bold">Margin Biasa(%)</small>
-                        </div>
-                        <div class="col-md-2">
-                        <small class="font-weight-bold">Harga Biasa</small>
-                        </div>
-                        <div class="col-md-2">
-                            <small class="font-weight-bold">Margin Resep(%)</small>
-                        </div>
-                        <div class="col-md-2">
-                            <small class="font-weight-bold">Harga Resep</small>
-                        </div>
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Nama Kategori</small>
+                        <select name="kategori" id="kategori" class="form-control form-control-sm">
+                            <option value="">--Pilih--</option>
+                            @foreach($kategori_produk as $i)
+                            <option value="{{ $i->id }}">{{ $i->nama_kategori }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                        <!-- Level 1 -->
-                    <div class="row mt-1">
-                        <input type="hidden" name="id_konversi" id="id_konversi_1">
-                        <div class="col-md-2">
-                            <select name="satuan_jual" id="satuan_jual_1" class="form-control form-control-sm">
-                                <option value="Dus">Dus</option>
-                                <option value="Botol">Botol</option>
-                                <option value="Strip">Strip</option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Vial">Vial</option>
-                                <option value="Tubes">Tubes</option>
-                                <option value="Ampul">Ampul</option>
-                                <option value="Capsule">Capsule</option>
-                                <option value="Box">Box</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="nilai_konversi" id="nilai_konversi_1" class="form-control form-control-sm" value="1" min="1" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="margin_biasa" id="margin_biasa_1" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="harga_biasa" id="harga_biasa_1" class="form-control form-control-sm" value="0">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="margin_resep" id="margin_resep_1" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="harga_resep" id="harga_resep_1" class="form-control form-control-sm" value="0">
-                        </div>
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Nama Produk</small>
+                        <input type="text" name="nama_produk" id="nama_produk" class="form-control form-control-sm">
                     </div>
-                        <!-- Level 2 -->
-                    <div class="row mt-1">
-                        <input type="hidden" name="id_konversi" id="id_konversi_2">
-                        <div class="col-md-2">
-                            <select name="satuan_jual" id="satuan_jual_2" class="form-control form-control-sm">
-                                <option value="Dus">Dus</option>
-                                <option value="Botol">Botol</option>
-                                <option value="Strip">Strip</option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Vial">Vial</option>
-                                <option value="Tubes">Tubes</option>
-                                <option value="Ampul">Ampul</option>
-                                <option value="Capsule">Capsule</option>
-                                <option value="Box">Box</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="nilai_konversi" id="nilai_konversi_2" class="form-control form-control-sm" value="1" min="1" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="margin_biasa" id="margin_biasa_2" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="harga_biasa" id="harga_biasa_2" class="form-control form-control-sm" value="0">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="margin_resep" id="margin_resep_2" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="harga_resep" id="harga_resep_2" class="form-control form-control-sm" value="0">
-                        </div>
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Stok Minimal</small>
+                        <input type="number" name="stok_minimal" id="stok_minimal" class="form-control form-control-sm">
                     </div>
-                        <!-- Level 3 -->
-                    <div class="row mt-1">
-                        <input type="hidden" name="id_konversi" id="id_konversi_3">
-                        <div class="col-md-2">
-                            <select name="satuan_jual" id="satuan_jual_3" class="form-control form-control-sm">
-                                <option value="Dus">Dus</option>
-                                <option value="Botol">Botol</option>
-                                <option value="Strip">Strip</option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Vial">Vial</option>
-                                <option value="Tubes">Tubes</option>
-                                <option value="Ampul">Ampul</option>
-                                <option value="Capsule">Capsule</option>
-                                <option value="Box">Box</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="nilai_konversi" id="nilai_konversi_3" class="form-control form-control-sm" value="1" min="1">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="margin_biasa" id="margin_biasa_3" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="harga_biasa" id="harga_biasa_3" class="form-control form-control-sm" value="0">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="margin_resep" id="margin_resep_3" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="harga_resep" id="harga_resep_3" class="form-control form-control-sm" value="0">
-                        </div>
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Harga Beli</small>
+                        <input type="number" name="harga_beli" id="harga_beli" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
                     </div>
-                        <!-- Level 4 -->
-                    <div class="row mt-1">
-                        <input type="hidden" name="id_konversi" id="id_konversi_4">
-                        <div class="col-md-2">
-                            <select name="satuan_jual" id="satuan_jual_4" class="form-control form-control-sm">
-                                <option value="Dus">Dus</option>
-                                <option value="Botol">Botol</option>
-                                <option value="Strip">Strip</option>
-                                <option value="Pcs">Pcs</option>
-                                <option value="Vial">Vial</option>
-                                <option value="Tubes">Tubes</option>
-                                <option value="Ampul">Ampul</option>
-                                <option value="Capsule">Capsule</option>
-                                <option value="Box">Box</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="nilai_konversi" id="nilai_konversi_4" class="form-control form-control-sm" value="1" min="1">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="margin_biasa" id="margin_biasa_4" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="harga_biasa" id="harga_biasa_4" class="form-control form-control-sm" value="0">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="margin_resep" id="margin_resep_4" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" name="harga_resep" id="harga_resep_4" class="form-control form-control-sm" value="0">
-                        </div>
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Produsen</small>
+                        <select name="produsen" id="produsen" class="form-control form-control-sm">
+                            <option value="">--Pilih--</option>
+                            @foreach($produsen as $i)
+                            <option value="{{ $i->id }}">{{ $i->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <!-- Stok Awal -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
-                        <!-- <div class="col-md-12">
-                            <small class="font-weight-bold">**Stok Awal</small>
-                        </div>
-                        <div class="col-md-3">
-                            <small class="font-weight-bold">Jumlah</small>
-                            <input type="number" name="" id="" class="form-control form-control-sm" min="0">
-                        </div>
-                        <div class="col-md-3">
-                            <small class="font-weight-bold">Satuan</small>
-                            <select name="" id="" class="form-control form-control-sm">
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <small class="font-weight-bold">Expired Date</small>
-                            <input type="date" name="" id="" class="form-control form-control-sm">
-                        </div> -->
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Supplier</small>
+                        <select name="supplier" id="supplier" class="form-control form-control-sm">
+                            <option value="">--Pilih--</option>
+                            @foreach($supplier as $i)
+                            <option value="{{ $i->id }}">{{ $i->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
-
-                
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Level Satuan</small>
+                        <select name="level_satuan" id="level_satuan" class="form-control form-control-sm" onchange="ubahLevelSatuan()">
+                            <option value="1">Level 1</option>
+                            <option value="2">Level 2</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <small class="font-weight-bold">Margin Pajak(10%)</small>
+                        <select name="margin_pajak" id="margin_pajak" class="form-control form-control-sm" onchange="ubahHargaBeli()">
+                            <option value="1">Ya</option>
+                            <option value="0">Tidak</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <hr>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <small class="font-weight-bold">Tipe Satuan</small>
+                    </div>
+                    <div class="col-md-2">
+                        <small class="font-weight-bold">Nilai Konversi</small>
+                    </div>
+                    <div class="col-md-2">
+                        <small class="font-weight-bold">Margin Biasa(%)</small>
+                    </div>
+                    <div class="col-md-2">
+                    <small class="font-weight-bold">Harga Biasa</small>
+                    </div>
+                    <div class="col-md-2">
+                        <small class="font-weight-bold">Margin Resep(%)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <small class="font-weight-bold">Harga Resep</small>
+                    </div>
+                </div>
+                    <!-- Level 1 -->
+                <div class="row mt-1">
+                    <input type="hidden" name="id_konversi" id="id_konversi_1">
+                    <div class="col-md-2">
+                        <select name="satuan_jual" id="satuan_jual_1" class="form-control form-control-sm">
+                            <option value="Dus">Dus</option>
+                            <option value="Botol">Botol</option>
+                            <option value="Strip">Strip</option>
+                            <option value="Pcs">Pcs</option>
+                            <option value="Vial">Vial</option>
+                            <option value="Tubes">Tubes</option>
+                            <option value="Ampul">Ampul</option>
+                            <option value="Capsule">Capsule</option>
+                            <option value="Box">Box</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="nilai_konversi" id="nilai_konversi_1" class="form-control form-control-sm" value="1" min="1" onkeyup="ubahHargaBeli()">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="margin_biasa" id="margin_biasa_1" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="harga_biasa" id="harga_biasa_1" class="form-control form-control-sm" value="0">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="margin_resep" id="margin_resep_1" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="harga_resep" id="harga_resep_1" class="form-control form-control-sm" value="0">
+                    </div>
+                </div>
+                    <!-- Level 2 -->
+                <div class="row mt-1">
+                    <input type="hidden" name="id_konversi" id="id_konversi_2">
+                    <div class="col-md-2">
+                        <select name="satuan_jual" id="satuan_jual_2" class="form-control form-control-sm">
+                            <option value="Dus">Dus</option>
+                            <option value="Botol">Botol</option>
+                            <option value="Strip">Strip</option>
+                            <option value="Pcs">Pcs</option>
+                            <option value="Vial">Vial</option>
+                            <option value="Tubes">Tubes</option>
+                            <option value="Ampul">Ampul</option>
+                            <option value="Capsule">Capsule</option>
+                            <option value="Box">Box</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="nilai_konversi" id="nilai_konversi_2" class="form-control form-control-sm" value="1" min="1" onkeyup="ubahHargaBeli()">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="margin_biasa" id="margin_biasa_2" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="harga_biasa" id="harga_biasa_2" class="form-control form-control-sm" value="0">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="margin_resep" id="margin_resep_2" class="form-control form-control-sm" value="0" onkeyup="ubahHargaBeli()">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="harga_resep" id="harga_resep_2" class="form-control form-control-sm" value="0">
+                    </div>
+                </div>
+                <!-- Stok Awal -->
+                <!-- <div class="row">
+                    <div class="col-md-12">
+                        <hr>
+                    </div>
+                    <div class="col-md-12">
+                        <small class="font-weight-bold">**Stok Awal</small>
+                    </div>
+                    <div class="col-md-3">
+                        <small class="font-weight-bold">Jumlah</small>
+                        <input type="number" name="" id="" class="form-control form-control-sm" min="0">
+                    </div>
+                    <div class="col-md-3">
+                        <small class="font-weight-bold">Satuan</small>
+                        <select name="" id="" class="form-control form-control-sm">
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <small class="font-weight-bold">Expired Date</small>
+                        <input type="date" name="" id="" class="form-control form-control-sm">
+                    </div>
+                </div> -->
             </div>
             <div class="modal-footer">
                 <button type="submit" id="btnSave" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Simpan</button>
@@ -329,7 +262,7 @@
         event.preventDefault();
         //Data Konversi
         var data_konversi = {};
-        for(var i=1;i<=4;i++){
+        for(var i=1;i<=2;i++){
             data_konversi[i] = {
                 'level' : i,
                 'id' : $("#id_konversi_"+i).val(),
@@ -347,6 +280,7 @@
             method : "POST",
             data : {
                 'id_' : $("#id_").val(),
+                'kode_produk' : $("#kode_produk").val(),
                 'kategori' : $("#kategori").val(),
                 'nama_produk' : $("#nama_produk").val(),
                 'stok_minimal' : $("#stok_minimal").val(),
@@ -358,9 +292,8 @@
                 'data_konversi' : data_konversi,
             },
             success : function(ajaxData){
-                console.log(ajaxData);
                 //Empty Field
-                // emptyField()
+                emptyField()
                 //Hide Modal
                 $("#modal_").modal('hide');
                 //Modifikasi Alert                
@@ -379,7 +312,34 @@
     //Empty Field
     function emptyField(){
         $("#id_").val("")
-        $("#nama").val("")
+        $("#kode_produk").val("")
+        $("#kategori").val("")
+        $("#nama_produk").val("")
+        $("#stok_minimal").val(0)
+        $("#harga_beli").val(0)
+        $("#produsen").val("")
+        $("#supplier").val("")
+        $("#level_satuan").val(1)
+        $("#margin_pajak").val(1)
+
+        ubahLevelSatuan()
+        
+        $("#id_konversi_1").val("")
+        $("#satuan_jual_1").val("Dus")
+        $("#nilai_konversi_1").val(1)
+        $("#margin_biasa_1").val(0)
+        $("#harga_biasa_1").val(0)
+        $("#margin_resep_1").val(0)
+        $("#harga_resep_1").val(0)
+
+        $("#id_konversi_2").val("")
+        $("#satuan_jual_2").val("Dus")
+        $("#nilai_konversi_2").val(1)
+        $("#margin_biasa_2").val(0)
+        $("#harga_biasa_2").val(0)
+        $("#margin_resep_2").val(0)
+        $("#harga_resep_2").val(0)
+
     }
 
     //Ubah Harga Beli
@@ -422,7 +382,7 @@
             $("#margin_resep_"+i).removeAttr('readonly');
             $("#harga_resep_"+i).removeAttr('readonly');
         }
-        for(var i=4;i>value;i--){
+        for(var i=2;i>value;i--){
             $("#satuan_jual_"+i).attr('readonly','true');
             $("#nilai_konversi_"+i).attr('readonly','true');
             $("#margin_biasa_"+i).attr('readonly','true');
@@ -452,19 +412,24 @@
                 {data : 'nama_kategori'},
                 {data : 'id'},
                 {data : 'nama_produk'},
-                {data : 'stok_minimal'},
-                {data : 'status_pajak_produk'},
+                {"className" : "text-right", data : 'stok_minimal'},
+                {render: function (data, type, row, meta) {
+                        var status_pajak_produk = row.status_pajak_produk == "1" ? "Margin Pajak" : "Tanpa Pajak";
+                        return status_pajak_produk;
+                    }  
+                },
                 {data : 'nama_produsen'},
                 {data : 'nama_supplier'},
-                { "className" : "text-center",
+                {"className" : "text-center",
                     render: function (data, type, row, meta) {
                         var action_button = "<button class='btn btn-sm btn-primary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Aksi </button>"+
                                 "<div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>"+
-                                    "<a class='dropdown-item' href='#' onclick='edit("+row.id+")'>Edit</a>"+
-                                    "<a class='dropdown-item' href='#' onclick='del("+row.id+")'>Delete</a>"+
+                                    "<a class='dropdown-item' href='#' onclick='edit(\""+row.id+"\")'>Edit</a>"+
+                                    // "<a class='dropdown-item' href='#' onclick='del(\""+row.id+"\")'>Delete</a>"+
                                 "</div>";
                         return action_button;
-                    }  
+                  
+                    }
                 },
             ],
         });
@@ -476,24 +441,52 @@
         $('#table_view tbody').empty();
     }
 
-    function edit(KategoriProdukID){
+    function edit(produkID){
         $("#modal_").modal('show');
         $("#ModalLabel").addClass("font-weight-bold")
-        $("#ModalLabel").html('Edit Data Kategori Produk')
+        $("#ModalLabel").html('Edit Data Produk')
         $.ajax({
             type : "GET",
-            url: "{{ url('kategori_produk')}}"+"/"+KategoriProdukID+"/"+"edit",
+            url: "{{ url('produk')}}"+"/edit/"+produkID,
             success: function (ajaxData) {
-                $("#id_").val(ajaxData.id)
-                $("#nama").val(ajaxData.nama_kategori)
+                // console.log(ajaxData.produk_konversi_stok)
+                $("#id_").val(ajaxData.produk.id)
+                $("#kode_produk").val(ajaxData.produk.id)
+                $("#kategori").val(ajaxData.produk.kategori_produk_id)
+                $("#nama_produk").val(ajaxData.produk.nama_produk)
+                $("#stok_minimal").val(ajaxData.produk.stok_minimal)
+                $("#harga_beli").val(ajaxData.produk.harga_beli)
+                $("#produsen").val(ajaxData.produk.produsen_id)
+                $("#supplier").val(ajaxData.produk.supplier_id)
+                $("#level_satuan").val(ajaxData.produk.level_satuan)
+                $("#margin_pajak").val(ajaxData.produk.status_pajak_produk)
+
+                ubahLevelSatuan();
+
+                $("#id_konversi_1").val(ajaxData.produk_konversi_stok[0].id)
+                $("#satuan_jual_1").val(ajaxData.produk_konversi_stok[0].satuan)
+                $("#nilai_konversi_1").val(ajaxData.produk_konversi_stok[0].nilai_konversi)
+                $("#margin_biasa_1").val(ajaxData.produk_konversi_stok[0].laba_harga_biasa)
+                $("#harga_biasa_1").val(ajaxData.produk_konversi_stok[0].harga_biasa)
+                $("#margin_resep_1").val(ajaxData.produk_konversi_stok[0].laba_harga_resep)
+                $("#harga_resep_1").val(ajaxData.produk_konversi_stok[0].harga_resep)
+
+                $("#id_konversi_2").val(ajaxData.produk_konversi_stok[1].id)
+                $("#satuan_jual_2").val(ajaxData.produk_konversi_stok[1].satuan)
+                $("#nilai_konversi_2").val(ajaxData.produk_konversi_stok[1].nilai_konversi)
+                $("#margin_biasa_2").val(ajaxData.produk_konversi_stok[1].laba_harga_biasa)
+                $("#harga_biasa_2").val(ajaxData.produk_konversi_stok[1].harga_biasa)
+                $("#margin_resep_2").val(ajaxData.produk_konversi_stok[1].laba_harga_resep)
+                $("#harga_resep_2").val(ajaxData.produk_konversi_stok[1].harga_resep)
             },
         });            
     }
-    function del(KategoriProdukID){
+
+    function del(produkID){
         if(confirm('Anda Yakin Menghapus Data?')){
             $.ajax({
-                type : "DELETE",
-                url: "{{ url('kategori_produk')}}"+'/'+KategoriProdukID,
+                type : "POST",
+                url: "{{ url('produk')}}"+'/delete/'+produkID,
                 success: function (ajaxData) {
                     if(ajaxData == "1"){
                         $("#alert_messages_").text('Data Berhasil Dihapus');

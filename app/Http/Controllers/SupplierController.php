@@ -51,13 +51,7 @@ class SupplierController extends Controller
  
         return Response::json($data);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Supplier  $supplier
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         $data = Supplier::where('id',$id)->delete();

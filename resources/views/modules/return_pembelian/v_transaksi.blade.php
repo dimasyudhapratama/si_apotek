@@ -197,7 +197,7 @@
     function addRow(record){
         var data =  "<div class='row mt-1' id='row_"+row_id+"'>"+
                         "<div class='col-md-2'>"+
-                            "<input type='text' name='kode_produk[]' id='kode_produk_"+row_id+"' class='form-control form-control-sm required' value='"+record['produk_id']+"'>"+
+                            "<input type='text' name='kode_produk[]' id='kode_produk_"+row_id+"' class='form-control form-control-sm required' value='"+record['produk_id']+"' readonly>"+
                         "</div>"+
                         "<div class='col-md-2'>"+
                             "<input type='text' name='nama_produk[]' id='nama_produk_"+row_id+"' class='form-control form-control-sm required' value='"+record['nama_produk']+"' readonly>"+
@@ -317,7 +317,7 @@
                 //
                 kode_produk : $('input[name="kode_produk[]"]').map(function(){ return this.value; }).get() ,
                 exp_date : $('input[name="exp_date[]"]').map(function(){ return this.value; }).get() ,
-                satuan : $('select[name="satuan[]"]').map(function(){ return this.value; }).get() , 
+                satuan : $('input[name="satuan[]"]').map(function(){ return this.value; }).get() , 
                 harga : $('input[name="harga[]"]').map(function(){ return this.value; }).get() ,
                 qty : $('input[name="qty[]"]').map(function(){ return this.value; }).get() ,
                 subtotal : $('input[name="sub_total[]"]').map(function(){ return this.value; }).get() ,

@@ -6,12 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Produk;
 use App\ProdukKonversiStok;
+use Response;
 
 class ProdukController extends Controller
 {
-    function __construct(){
-
-    }
 
     function json(){
         $data = DB::table('produk')
@@ -64,9 +62,9 @@ class ProdukController extends Controller
 
     function store(Request $request){
         //Save Ke Tabel Produk
-        $produk_id = $request->id_;
+        // $produk_id = $request->kode_produk;
         $array_data_produk = [
-            'id' => $produk_id,
+            'id' => $request->kode_produk,
             'kategori_produk_id' => $request->kategori,
             'produsen_id' => $request->produsen,
             'supplier_id' => $request->supplier,
@@ -76,20 +74,20 @@ class ProdukController extends Controller
             'level_satuan' => $request->level_satuan,
             'status_pajak_produk' => $request->margin_pajak,
         ];
-        $save_produk = Produk::updateOrCreate(['id' => $produk_id ], $array_data_produk);
+        $save_produk = Produk::updateOrCreate(['id' => $request->id_], $array_data_produk);
         
         //Save Ke Tabel Produk Konversi Stok
-        // print_r($request->data_konversi);
         $data_konversi = $request->data_konversi;
-        for($i=1;$i<=4;$i++){
+        for($i=1;$i<=2;$i++){
             $produk_konversi_stok_id = $data_konversi[$i]['id'];
+
             $status_aktif = "1";
             if($i > $request->level_satuan){
                 $status_aktif = "0";
             }
-            // echo $status_aktif."<br>";
+
             $array_data_produk_konversi = [
-                'produk_id' => $produk_id,
+                'produk_id' => $request->kode_produk,
                 'status_aktif' => $status_aktif,
                 'level' => $i,
                 'satuan' => $data_konversi[$i]['satuan_jual'],
@@ -104,5 +102,22 @@ class ProdukController extends Controller
         return "1";
     }
 
+    function edit($id){
+        $produk = DB::table('produk')->where('id',$id)->first();
+        $produk_konversi_stok = ProdukKonversiStok::where('produk_id',$id)->get();
+        $all_data = [
+            'produk' => $produk,
+            'produk_konversi_stok' => $produk_konversi_stok
+        ];
+        return Response::json($all_data);
+    }
 
+    function update($data_request){
+
+    }
+
+    function delete($id){
+        $data = Produk::where('id',$id)->delete();
+        return Response::json($data);
+    }
 }

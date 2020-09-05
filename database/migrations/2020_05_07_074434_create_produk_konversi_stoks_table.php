@@ -15,7 +15,9 @@ class CreateProdukKonversiStoksTable extends Migration
     {
         Schema::create('produk_konversi_stok', function (Blueprint $table) {
             $table->id();
-            $table->string('produk_id',30)->nullable()->foreign('produk_id')->references('id')->on('produk');
+            // $table->string('produk_id',30)->foreign('produk_id')->references('id')->on('produk')->onUpdate('cascade')->onDelete('restrict');
+            $table->string('produk_id',30);
+            $table->foreign('produk_id')->references('id')->on('produk')->onUpdate('cascade')->onDelete('restrict');
             $table->enum('status_aktif',["0","1"]);
             $table->enum('level',['1','2','3','4']);
             $table->string('satuan',15);

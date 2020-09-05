@@ -153,7 +153,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <input type="text" name="id_" id="id_ep">
+                    <input type="hidden" name="id_" id="id_ep">
                     <div class="row">
                         <div class="col-md-6">
                             <label for="">Password</label>    
@@ -383,7 +383,6 @@
                                 "<div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>"+
                                     "<a class='dropdown-item' href='#' onclick='edit("+row.id+")'>Edit</a>"+
                                     "<a class='dropdown-item' href='#' onclick='editPassword("+row.id+")'>Ubah Password</a>"+
-                                    "<a class='dropdown-item' href='#' onclick='del("+row.id+")'>Delete</a>"+
                                 "</div>";
                         return action_button;
                     }  

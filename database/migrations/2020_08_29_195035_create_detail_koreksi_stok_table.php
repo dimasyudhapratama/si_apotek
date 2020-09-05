@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProdukStokDetailsTable extends Migration
+class CreateDetailKoreksiStokTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateProdukStokDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('produk_stok_detail', function (Blueprint $table) {
+        Schema::create('detail_koreksi_stok', function (Blueprint $table) {
             $table->id();
+            $table->string('koreksi_stok_id',30)->nullable()->foreign('koreksi_stok_id')->references('id')->on('koreksi_stok');
             $table->foreignId('produk_konversi_stok_id')->nullable()->references('id')->on('produk_konversi_stok')->onUpdate('cascade');
-            $table->date('exp_date');
-            $table->float('jumlah', 10, 2);
+            $table->date('produk_stok_detail_exp_date');
+            $table->float('qty_awal', 8, 2);
+            $table->float('qty_akhir', 8, 2);
         });
     }
 
@@ -28,6 +30,6 @@ class CreateProdukStokDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('produk_stok_detail');
+        Schema::dropIfExists('detail_koreksi_stok');
     }
 }

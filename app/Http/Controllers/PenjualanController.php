@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Dokter;
@@ -9,6 +10,7 @@ use App\Customer;
 use App\Penjualan;
 use App\PembayaranPenjualan;
 use App\DetailPenjualan;
+use App\ProdukStokDetail;
 
 class PenjualanController extends Controller{
 
@@ -77,7 +79,7 @@ class PenjualanController extends Controller{
     function store(Request $request){
         //Save Ke Tabel Penjualan
         $array_data = [
-            'user_id' => "1", 
+            'user_id' => Auth::id(), 
             'dokter_id' => $request->dokter,
             'customer_id' => $request->customer,
             'tipe_penjualan' => $request->tipe_penjualan,
@@ -100,13 +102,18 @@ class PenjualanController extends Controller{
         $array_data_kredit = [
             'penjualan_id' => $penjualan->id,
             'jumlah' => $request->terbayar - $request->grand_total >= 0 ? $request->grand_total : $request->terbayar,
-            'user_id' => "1"
+            'user_id' => Auth::id()
         ];
         PembayaranPenjualan::create($array_data_kredit);
         
 
         //Detail Pembelian
         for($i = 0; $i < count($request->subtotal); $i++){
+
+            //Check Total Stok Tersedia
+            //////
+            //////
+
             //Save Ke Tabel Detail Pembelian
             $array_data_detail = [
                 'penjualan_id' => $penjualan->id,
@@ -119,56 +126,76 @@ class PenjualanController extends Controller{
             DetailPenjualan::create($array_data_detail);
 
 
-            // //Pengolahan Stok
-            // //Detail Konversi Stok Per Row - Mengambil Level Stok
-            // $detail_pembelian = DB::table('produk_konversi_stok')->where('id',$request->satuan[$i])->select('level')->first();
-            // $level = $detail_pembelian->level;
+            //Pengolahan Stok
+            //Detail Konversi Stok Per Row - Mengambil Level Stok
+            $produk_konversi_stok = DB::table('produk_konversi_stok')->where('id',$request->satuan[$i])->select('level')->first();
+            $level_satuan_initial = $produk_konversi_stok->level;
 
 
-            // //load Konversi Stok
-            // $produk_konversi_stok_data = DB::table('produk_konversi_stok')  //Looping Per Row Berdasarkan Produk ID dan Status Aktif 1
-            // ->join('produk','produk.id','=','produk_konversi_stok.produk_id')
-            // ->where('produk_konversi_stok.produk_id','=',$request->kode_produk[$i])
-            // ->where('produk_konversi_stok.level','>=',$level)
-            // ->where('produk_konversi_stok.status_aktif','=','1')
-            // ->select('produk.level_satuan','produk_konversi_stok.id AS produk_konversi_stok_id','produk_konversi_stok.level','produk_konversi_stok.nilai_konversi')
-            // ->get();
-            
-            // // $jumlah_konversi_temp = 1; // Stok Konversi Pertama adalah 0
-            // $temp = 1;
-            // $nilai_konversi = 1;
-            // $level_initial = 1;
-            // foreach($produk_konversi_stok_data as $p){
-            //     if($level_initial > 1){
-            //         $temp = $p->nilai_konversi / $temp;
-            //         $nilai_konversi *= $temp;
+            //load Konversi Stok
+            $produk_konversi_stok_data = DB::table('produk_konversi_stok')  //Looping Per Row Berdasarkan Produk ID dan Status Aktif 1
+            ->join('produk','produk.id','=','produk_konversi_stok.produk_id')
+            ->where('produk_konversi_stok.produk_id','=',$request->kode_produk[$i])
+            ->where('produk_konversi_stok.status_aktif','=','1')
+            ->select('produk.level_satuan','produk_konversi_stok.id AS produk_konversi_stok_id','produk_konversi_stok.level','produk_konversi_stok.nilai_konversi')
+            ->orderByDesc('produk_konversi_stok_id')
+            ->get();
 
-            //     }
-            //     // echo $temp.' '.$nilai_konversi.'<br>';
+            $increment_temporary = 0;
+            $nilai_konversi = 1;
+            $input_stok = 0;
+            $stok_baru = 0;
+            foreach($produk_konversi_stok_data as $p){
                 
-            //     // Melihat di Tabel Produk Stok Detail Berdasarkan 
-            //     $jumlah_awal = 0;
-            //     $jumlah_baru = $request->qty[$i] * $nilai_konversi;
+                //Increment Temporary Digunakan untuk Percabangan Multi Stok
+                if($increment_temporary == 0){
+                    //Nilai Konversi
+                    $nilai_konversi = $p->nilai_konversi;
 
-            //     if(DB::table('produk_stok_detail')->where('produk_konversi_stok_id',$p->produk_konversi_stok_id)->where('exp_date',$request->exp_date[$i])->exists()){
-            //         $data = DB::table('produk_stok_detail')->where('produk_konversi_stok_id',$p->produk_konversi_stok_id)->where('exp_date',$request->exp_date[$i])->first();
-            //         $jumlah_awal = $data->jumlah;
-            //     }
+                    //Jika Level Satuan Barang Yang Diinput adalah level 1
+                    if($level_satuan_initial == 1){
+                        $input_stok = $request->qty[$i] * $nilai_konversi;
 
-            //     $where = [
-            //         'produk_konversi_stok_id' => $p->produk_konversi_stok_id,
-            //         'exp_date' => $request->exp_date[$i],
-            //     ];                
-            //     $data_detail_stok = [
-            //         'produk_konversi_stok_id' => $p->produk_konversi_stok_id,
-            //         'exp_date' => $request->exp_date[$i],
-            //         'jumlah' => $jumlah_awal + $jumlah_baru,
-            //     ];
-            //     ProdukStokDetail::updateOrCreate($where, $data_detail_stok);
-             
-            //     $temp = $p->nilai_konversi;
-            //     $level_initial++;
-            // }
+                    }else if($level_satuan_initial == 2){ //Jika Level Satuan Barang yang diinput adalah level 2
+                        $input_stok = $request->qty[$i] * 1;
+                    }
+
+
+                    //Mencari Stok Lama Di Database
+                    $stok_lama = 0;
+                    if(DB::table('produk_stok_detail')
+                        ->where('produk_konversi_stok_id',$p->produk_konversi_stok_id)
+                        ->where('exp_date',$request->exp_date[$i])
+                        ->exists()){
+
+                        $data = DB::table('produk_stok_detail')->where('produk_konversi_stok_id',$p->produk_konversi_stok_id)->where('exp_date',$request->exp_date[$i])->first();
+                        $stok_lama = $data->jumlah;
+                    }
+
+                    //Menjumlahkan Stok Lama dengan Input Stok
+                    $stok_baru = $stok_lama - $input_stok;
+
+                }else if($increment_temporary == 1){
+                    $stok_baru = $stok_baru / $nilai_konversi;
+                }
+
+                //Increment Temporary
+                $increment_temporary++;
+
+                //Update or create New Data on Produk Stok Detail Table
+                $where = [
+                    'produk_konversi_stok_id' => $p->produk_konversi_stok_id,
+                    'exp_date' => $request->exp_date[$i],
+                ];                
+                $data_detail_stok = [
+                    'produk_konversi_stok_id' => $p->produk_konversi_stok_id,
+                    'exp_date' => $request->exp_date[$i],
+                    'jumlah' => $stok_baru,
+                ];
+                ProdukStokDetail::updateOrCreate($where, $data_detail_stok);
+                
+            }            
+            
         }
         //Return Ajax
         $return_data = [
@@ -176,14 +203,14 @@ class PenjualanController extends Controller{
             'invoice_number' => $penjualan->id
 
         ];
-        return $return_data ;
+        return $return_data;
     }
 
     function simpanPembayaranPenjualan(Request $request){
         $data = [
             'penjualan_id' => $request->penjualan_id,
             'jumlah' => $request->data_pembayaran_jumlah,
-            'user_id' => 1
+            'user_id' => Auth::id()
         ];
         PembayaranPenjualan::create($data);
 

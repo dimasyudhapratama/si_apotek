@@ -1,0 +1,11 @@
+@php $user = Auth::user() @endphp
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-user"></i> {{ $user->name }}</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+              <li>
+                <a class="dropdown-item" href="{{ route('logout') }}"onclick="logout()">Logout</a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+              </li>
+            </ul>

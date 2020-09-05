@@ -68,8 +68,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <li><a href="{{ url('/laporan_return_penjualan') }}" class="dropdown-item">Laporan Return Penjualan</a></li>
               <li><a href="{{ url('/laporan_return_pembelian') }}" class="dropdown-item">Laporan Return Pembelian</a></li>
               <li><a href="{{ url('/laporan_koreksi_stok') }}" class="dropdown-item">Laporan Koreksi Stok</a></li>
-              <li><a href="#" class="dropdown-item">Laporan Pajak</a></li>
-              <li><a href="{{ url('/komisi_dokter') }}" class="dropdown-item">Komisi Dokter</a></li>
+              <li><a href="{{ url('/laporan_pajak') }}" class="dropdown-item">Laporan Pajak</a></li>
+              <li><a href="{{ url('/laporan_komisi_dokter') }}" class="dropdown-item">Komisi Dokter</a></li>
               <li><a href="{{ url('/riwayat') }}" class="dropdown-item">Riwayat Sistem</a></li>
             </ul>
           </li>
@@ -97,12 +97,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Right navbar links -->
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-user"></i> User</a>
+            @php $user = Auth::user() @endphp
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-user"></i>{{ $user->name }}</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="{{ url('/self_akun') }}" class="dropdown-item">Akun</a></li>
-              <li><a href="{{ url('/logout') }}" class="dropdown-item">Keluar</a></li>
+              <li>
+                <a class="dropdown-item" href="{{ route('logout') }}"onclick="logout()">Logout</a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+              </li>
             </ul>
-          </li>
+        </li>
       </ul>
     </div>
   </nav>
