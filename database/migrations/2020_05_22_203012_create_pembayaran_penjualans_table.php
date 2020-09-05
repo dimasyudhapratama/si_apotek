@@ -15,7 +15,8 @@ class CreatePembayaranPenjualansTable extends Migration
     {
         Schema::create('pembayaran_penjualan', function (Blueprint $table) {
             $table->id();
-            $table->string('penjualan_id',30);$table->foreign('penjualan_id')->references('id')->on('penjualan');
+            $table->string('penjualan_id',30);
+            $table->foreign('penjualan_id')->references('id')->on('penjualan');
             $table->integer('jumlah',false,true)->length(11);
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onUpdate('cascade');
             $table->timestamps();
