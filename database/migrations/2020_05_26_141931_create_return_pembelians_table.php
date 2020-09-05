@@ -15,7 +15,8 @@ class CreateReturnPembeliansTable extends Migration
     {
         Schema::create('return_pembelian', function (Blueprint $table) {
             $table->string('id',30)->primary();
-            $table->string('pembelian_id',30)->nullable()->foreign('pembelian_id')->references('id')->on('pembelian');
+            $table->string('pembelian_id',30);
+            $table->foreign('pembelian_id')->references('id')->on('pembelian');
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onUpdate('cascade');
             $table->enum('status_pembayaran',['0','1']);
             $table->integer('total', false, true)->length(15);

@@ -15,7 +15,8 @@ class CreateDetailKoreksiStokTable extends Migration
     {
         Schema::create('detail_koreksi_stok', function (Blueprint $table) {
             $table->id();
-            $table->string('koreksi_stok_id',30)->nullable()->foreign('koreksi_stok_id')->references('id')->on('koreksi_stok');
+            $table->string('koreksi_stok_id',30);
+            $table->foreign('koreksi_stok_id')->references('id')->on('koreksi_stok');
             $table->foreignId('produk_konversi_stok_id')->nullable()->references('id')->on('produk_konversi_stok')->onUpdate('cascade');
             $table->date('produk_stok_detail_exp_date');
             $table->float('qty_awal', 8, 2);

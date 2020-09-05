@@ -15,7 +15,8 @@ class CreateDetailReturnPenjualansTable extends Migration
     {
         Schema::create('detail_return_penjualan', function (Blueprint $table) {
             $table->id();
-            $table->string('return_penjualan_id',30)->nullable()->foreign('return_penjualan_id')->references('id')->on('return_penjualan');
+            $table->string('return_penjualan_id',30);
+            $table->foreign('return_penjualan_id')->references('id')->on('return_penjualan');
             $table->foreignId('produk_konversi_stok_id')->nullable()->references('id')->on('produk_konversi_stok')->onUpdate('cascade');
             $table->date('produk_stok_detail_exp_date');
             $table->integer('harga',false,true)->length(11);

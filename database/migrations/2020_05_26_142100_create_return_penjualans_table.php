@@ -15,7 +15,8 @@ class CreateReturnPenjualansTable extends Migration
     {
         Schema::create('return_penjualan', function (Blueprint $table) {
             $table->string('id',30)->primary();
-            $table->string('penjualan_id',30)->nullable()->foreign('penjualan_id')->references('id')->on('penjualan');
+            $table->string('penjualan_id',30);
+            $table->foreign('penjualan_id')->references('id')->on('penjualan');
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onUpdate('cascade');
             $table->enum('status_pembayaran',['0','1']);
             $table->integer('total', false, true)->length(15);

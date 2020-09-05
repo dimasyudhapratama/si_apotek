@@ -15,7 +15,8 @@ class CreateDetailPembeliansTable extends Migration
     {
         Schema::create('detail_pembelian', function (Blueprint $table) {
             $table->id();
-            $table->string('pembelian_id',30)->nullable()->foreign('pembelian_id')->references('id')->on('pembelian');
+            $table->string('pembelian_id',30);
+            $table->foreign('pembelian_id')->references('id')->on('pembelian')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('produk_konversi_stok_id')->nullable()->references('id')->on('produk_konversi_stok')->onUpdate('cascade');
             $table->date('produk_stok_detail_exp_date');
             $table->integer('harga',false,true)->length(11);

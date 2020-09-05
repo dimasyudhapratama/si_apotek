@@ -15,7 +15,8 @@ class CreatePembayaranPembeliansTable extends Migration
     {
         Schema::create('pembayaran_pembelian', function (Blueprint $table) {
             $table->id();
-            $table->string('pembelian_id',30)->nullable()->foreign('pembelian_id')->references('id')->on('pembelian');
+            $table->string('pembelian_id',30);
+            $table->foreign('pembelian_id')->references('id')->on('pembelian');
             $table->integer('jumlah',false,true)->length(11);
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onUpdate('cascade');
             $table->timestamps();

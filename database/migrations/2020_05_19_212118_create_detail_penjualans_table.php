@@ -15,7 +15,8 @@ class CreateDetailPenjualansTable extends Migration
     {
         Schema::create('detail_penjualan', function (Blueprint $table) {
             $table->id();
-            $table->string('penjualan_id',30)->nullable()->foreign('penjualan_id')->references('id')->on('penjualan');
+            $table->string('penjualan_id',30);
+            $table->foreign('penjualan_id')->references('id')->on('penjualan')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('produk_konversi_stok_id')->nullable()->references('id')->on('produk_konversi_stok')->onUpdate('cascade');
             $table->date('produk_stok_detail_exp_date');
             $table->integer('harga',false,true)->length(11);
