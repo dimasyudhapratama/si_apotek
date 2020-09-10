@@ -24,7 +24,13 @@ class ProdukController extends Controller
 
     function jsonDataProcessed(){
         $data = DB::table('produk')
-        ->select('produk.id','produk.nama_produk', 'produk.stok_minimal', 'produk.status_pajak_produk')
+        ->select('produk.id','produk.nama_produk',
+            DB::raw("(SELECT SUM(produk_stok_detail.jumlah) 
+                    FROM produk_stok_detail 
+                    JOIN produk_konversi_stok ON produk_stok_detail.produk_konversi_stok_id = produk_konversi_stok.id 
+                    WHERE produk_konversi_stok.produk_id = produk.id 
+                    AND produk_konversi_stok.level = 1) AS stok_aktual")
+        )
         ->get();
 
         return datatables()->of($data)->toJson(); //Result To Datatable JSON

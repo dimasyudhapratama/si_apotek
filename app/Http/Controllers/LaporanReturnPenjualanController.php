@@ -15,112 +15,31 @@ class LaporanReturnPenjualanController extends Controller
 
     public function json(Request $request){
         //Initalization 
-        $data = "";
+        $data = DB::table('return_penjualan')
+            ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
+            ->leftJoin('users','return_penjualan.user_id','=','users.id')
+            ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
+            ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
+            ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total');
 
-        if($request->tipe_pencarian == "0" && $request->status_pembayaran == "0"){ //Menampilkan Semua Data Tanpa Filter
-            $data = DB::table('return_penjualan')
-            ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-            ->leftJoin('users','return_penjualan.user_id','=','users.id')
-            ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-            ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-            ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-            ->get();
-        }else if($request->tipe_pencarian == "0" && $request->status_pembayaran<> "0"){ //menampilkan Data Dengan tidak memfilter Tipe Pencarian dan  Dengan filter Tipe Pembayaran Lunas / Belum Lunas
-            $data = DB::table('return_penjualan')
-            ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-            ->leftJoin('users','return_penjualan.user_id','=','users.id')
-            ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-            ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-            ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-            ->where('return_penjualan.status_pembayaran','=',$request->status_pembayaran)
-            ->get();
-        }else if($request->tipe_pencarian <> "0" && $request->status_pembayaran == "0"){ //Menampilkan Data Dengan Tipe Pencarian dan tidak memfilter Status Pembayaran 
+        if($request->tipe_pencarian <> "0"){ //Menampilkan Data Dengan Tipe Pencarian
             if($request->tipe_pencarian == "1"){
-                $data = DB::table('return_penjualan')
-                ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-                ->leftJoin('users','return_penjualan.user_id','=','users.id')
-                ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-                ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-                ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-                ->whereMonth('return_penjualan.created_at',$request->bulan)
-                ->whereYear('return_penjualan.created_at',$request->tahun)
-                ->get();
+                $date = $request->tahun.'-'.$request->bulan.'-'.$request->tanggal;
+                $data->whereDate('return_penjualan.created_at',$date);
+
             }else if($request->tipe_pencarian == "2"){
-                $data = DB::table('return_penjualan')
-                ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-                ->leftJoin('users','return_penjualan.user_id','=','users.id')
-                ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-                ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-                ->selct('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-                ->whereMonth('return_penjualan.created_at',$request->bulan)
-                ->whereYear('return_penjualan.created_at',$request->tahun)
-                ->get();
+                $data->whereMonth('return_penjualan.created_at',$request->bulan)
+                    ->whereYear('return_penjualan.created_at',$request->tahun);
+
             }else if($request->tipe_pencarian == "3"){
-                $data = DB::table('return_penjualan')
-                ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-                ->leftJoin('users','return_penjualan.user_id','=','users.id')
-                ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-                ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-                ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-                ->whereYear('return_penjualan.created_at',$request->tahun)
-                ->get();
+                $data->whereYear('return_penjualan.created_at',$request->tahun);
+
             }else if($request->tipe_pencarian == "4"){
-                $data = DB::table('return_penjualan')
-                ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-                ->leftJoin('users','return_penjualan.user_id','=','users.id')
-                ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-                ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-                ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-                ->whereBetween('return_penjualan.created_at', [$request->tanggal_awal, $request->tanggal_akhir])
-                ->get();
-            }
-        }else if($request->tipe_pencarian <> "0" && $request->status_pembayaran <> "0"){ //Memfilter Seluruh Data
-            if($request->tipe_pencarian == "1"){
-                $data = DB::table('return_penjualan')
-                ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-                ->leftJoin('users','return_penjualan.user_id','=','users.id')
-                ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-                ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-                ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-                ->whereMonth('return_penjualan.created_at',$request->bulan)
-                ->whereYear('return_penjualan.created_at',$request->tahun)
-                ->where('return_penjualan.status_pembayaran','=',$request->status_pembayaran)
-                ->get();
-            }else if($request->tipe_pencarian == "2"){
-                $data = DB::table('return_penjualan')
-                ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-                ->leftJoin('users','return_penjualan.user_id','=','users.id')
-                ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-                ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-                ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-                ->whereMonth('return_penjualan.created_at',$request->bulan)
-                ->whereYear('return_penjualan.created_at',$request->tahun)
-                ->where('return_penjualan.status_pembayaran','=',$request->status_pembayaran)
-                ->get();
-            }else if($request->tipe_pencarian == "3"){
-                $data = DB::table('return_penjualan')
-                ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-                ->leftJoin('users','return_penjualan.user_id','=','users.id')
-                ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-                ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-                ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-                ->whereYear('return_penjualan.created_at',$request->tahun)
-                ->where('return_penjualan.status_pembayaran','=',$request->status_pembayaran)
-                ->get();
-            }else if($request->tipe_pencarian == "4"){
-                $data = DB::table('return_penjualan')
-                ->join('penjualan','return_penjualan.penjualan_id','=','penjualan.id')
-                ->leftJoin('users','return_penjualan.user_id','=','users.id')
-                ->leftJoin('dokter','penjualan.dokter_id','=', 'dokter.id')
-                ->leftJoin('customers','penjualan.customer_id','=', 'customers.id')
-                ->select('return_penjualan.id','return_penjualan.penjualan_id','return_penjualan.created_at','users.name','dokter.nama AS nama_dokter','customers.nama AS nama_customer','return_penjualan.status_pembayaran','return_penjualan.grand_total')
-                ->whereBetween('return_penjualan.created_at', [$request->tanggal_awal, $request->tanggal_akhir])
-                ->where('return_penjualan.status_pembayaran','=',$request->status_pembayaran)
-                ->get();
+                $data->whereBetween('return_penjualan.created_at', [$request->tanggal_awal, $request->tanggal_akhir]);
             }
         }
         
-        return datatables()->of($data)->toJson();
+        return datatables()->of($data->get())->toJson();
     }
 
     //Halaman Detail Detail Laporan Penjualan

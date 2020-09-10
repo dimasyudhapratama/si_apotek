@@ -180,10 +180,7 @@
                         <tr>
                             <td class="font-weight-bold text-center">Kode</td>
                             <td class="font-weight-bold text-center">Produk</td>
-                            <td class="font-weight-bold text-center">Stok 1</td>
-                            <td class="font-weight-bold text-center">Stok 2</td>
-                            <td class="font-weight-bold text-center">Stok 3</td>
-                            <td class="font-weight-bold text-center">Stok 4</td>
+                            <td class="font-weight-bold text-center">Stok Aktual</td>
                             <td class="font-weight-bold text-center">Aksi</td>
                         </tr>
                     </thead>
@@ -446,10 +443,7 @@
             columns: [
                 {data : 'id'},
                 {data : 'nama_produk'},
-                {data : 'stok_minimal'},
-                {data : 'stok_minimal'},
-                {data : 'stok_minimal'},
-                {data : 'stok_minimal'},
+                {"className" : "text-right", data : 'stok_aktual'},
                 { "className" : "text-center",
                     render: function (data, type, row, meta) {
                         // varibel row.id mewakili ID Produk

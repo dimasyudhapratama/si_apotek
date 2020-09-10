@@ -214,10 +214,7 @@
             columns: [
                 {data : 'id'},
                 {data : 'nama_produk'},
-                {data : 'stok_minimal'},
-                {data : 'stok_minimal'},
-                {data : 'stok_minimal'},
-                {data : 'stok_minimal'},
+                {"className" : "text-right", data : 'stok_aktual'},
                 { "className" : "text-center",
                     render: function (data, type, row, meta) {
                         // varibel row.id mewakili ID Produk

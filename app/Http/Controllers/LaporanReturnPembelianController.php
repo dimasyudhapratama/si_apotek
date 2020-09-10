@@ -16,102 +16,31 @@ class LaporanReturnPembelianController extends Controller
     //Datatables Halaman Index
     public function json(Request $request){
         //Initalization 
-        $data = "";
+        $data = DB::table('return_pembelian')
+            ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
+            ->leftJoin('users','return_pembelian.user_id','=','users.id')
+            ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
+            ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total');
                 
-        if($request->tipe_pencarian == "0" && $request->status_pembayaran == "0"){ //Menampilkan Semua Data Tanpa Filter
-            $data = DB::table('return_pembelian')
-            ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-            ->leftJoin('users','return_pembelian.user_id','=','users.id')
-            ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-            ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-            ->get();
-        }else if($request->tipe_pencarian == "0" && $request->status_pembayaran<> "0"){ //menampilkan Data Dengan tidak memfilter Tipe Pencarian dan  Dengan filter Tipe Pembayaran Lunas / Belum Lunas
-            $data = DB::table('return_pembelian')
-            ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-            ->leftJoin('users','return_pembelian.user_id','=','users.id')
-            ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-            ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-            ->where('return_pembelian.status_pembayaran','=',$request->status_pembayaran)
-            ->get();
-        }else if($request->tipe_pencarian <> "0" && $request->status_pembayaran == "0"){ //Menampilkan Data Dengan Tipe Pencarian dan tidak memfilter Status Pembayaran 
+        if($request->tipe_pencarian <> "0"){ //Menampilkan Data Dengan Tipe Pencarian
             if($request->tipe_pencarian == "1"){
-                $data = DB::table('return_pembelian')
-                ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-                ->leftJoin('users','return_pembelian.user_id','=','users.id')
-                ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-                ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-                ->whereMonth('return_pembelian.created_at',$request->bulan)
-                ->whereYear('return_pembelian.created_at',$request->tahun)
-                ->get();
+                $date = $request->tahun.'-'.$request->bulan.'-'.$request->tanggal;
+                $data->whereDate('return_pembelian.created_at',$date);
+
             }else if($request->tipe_pencarian == "2"){
-                $data = DB::table('return_pembelian')
-                ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-                ->leftJoin('users','return_pembelian.user_id','=','users.id')
-                ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-                ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-                ->whereMonth('return_pembelian.created_at',$request->bulan)
-                ->whereYear('return_pembelian.created_at',$request->tahun)
-                ->get();
+                $data->whereMonth('return_pembelian.created_at',$request->bulan)
+                    ->whereYear('return_pembelian.created_at',$request->tahun);
+
             }else if($request->tipe_pencarian == "3"){
-                $data = DB::table('return_pembelian')
-                ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-                ->leftJoin('users','return_pembelian.user_id','=','users.id')
-                ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-                ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-                ->whereYear('return_pembelian.created_at',$request->tahun)
-                ->get();
+                $data->whereYear('return_pembelian.created_at',$request->tahun);
+
             }else if($request->tipe_pencarian == "4"){
-                $data = DB::table('return_pembelian')
-                ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-                ->leftJoin('users','return_pembelian.user_id','=','users.id')
-                ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-                ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-                ->whereBetween('return_pembelian.created_at', [$request->tanggal_awal, $request->tanggal_akhir])
-                ->get();
-            }
-        }else if($request->tipe_pencarian <> "0" && $request->status_pembayaran <> "0"){ //Memfilter Seluruh Data
-            if($request->tipe_pencarian == "1"){
-                $data = DB::table('return_pembelian')
-                ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-                ->leftJoin('users','return_pembelian.user_id','=','users.id')
-                ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-                ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-                ->whereMonth('return_pembelian.created_at',$request->bulan)
-                ->whereYear('return_pembelian.created_at',$request->tahun)
-                ->where('return_pembelian.status_pembayaran','=',$request->status_pembayaran)
-                ->get();
-            }else if($request->tipe_pencarian == "2"){
-                $data = DB::table('return_pembelian')
-                ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-                ->leftJoin('users','return_pembelian.user_id','=','users.id')
-                ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-                ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-                ->whereMonth('return_pembelian.created_at',$request->bulan)
-                ->whereYear('return_pembelian.created_at',$request->tahun)
-                ->where('return_pembelian.status_pembayaran','=',$request->status_pembayaran)
-                ->get();
-            }else if($request->tipe_pencarian == "3"){
-                $data = DB::table('return_pembelian')
-                ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-                ->leftJoin('users','return_pembelian.user_id','=','users.id')
-                ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-                ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-                ->whereYear('return_pembelian.created_at',$request->tahun)
-                ->where('return_pembelian.status_pembayaran','=',$request->status_pembayaran)
-                ->get();
-            }else if($request->tipe_pencarian == "4"){
-                $data = DB::table('return_pembelian')
-                ->join('pembelian','return_pembelian.pembelian_id','=','pembelian.id')
-                ->leftJoin('users','return_pembelian.user_id','=','users.id')
-                ->leftJoin('supplier','pembelian.supplier_id','=', 'supplier.id')
-                ->select('return_pembelian.id','return_pembelian.pembelian_id','return_pembelian.created_at','users.name','supplier.nama','return_pembelian.status_pembayaran','return_pembelian.grand_total')
-                ->whereBetween('return_pembelian.created_at', [$request->tanggal_awal, $request->tanggal_akhir])
-                ->where('return_pembelian.status_pembayaran','=',$request->status_pembayaran)
-                ->get();
+                $data->whereBetween('return_pembelian.created_at', [$request->tanggal_awal, $request->tanggal_akhir]);
+
             }
         }
         
-        return datatables()->of($data)->toJson();
+        return datatables()->of($data->get())->toJson();
     }
 
     //Halaman Detail Detail Laporan Pembelian

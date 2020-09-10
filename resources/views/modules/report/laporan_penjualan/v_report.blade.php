@@ -110,19 +110,7 @@
                             <label for="">Tanggal Akhir</label>
                             <input type="date" name="tanggal_akhir" id="tanggal_akhir" class="form-control form-control-sm">
                         </div>
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="">Status Pembayaran</label>
-                            <select name="status_pembayaran" id="status_pembayaran" class="form-control form-control-sm">
-                                <option value="0">Semua</option>
-                                <option value="1">Lunas</option>
-                                <option value="2">Belum Lunas</option>
-                            </select>
-                        </div>
                     </div>
-                
             </div>
             <div class="modal-footer">
                 <button type="submit" id="btnLoadDatatableWithParameter" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Simpan</button>

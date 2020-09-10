@@ -160,6 +160,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     stoppable: true
   });
 </script> -->
+<script>
+  function logout(){
+    event.preventDefault();
+    var confirm = "Apakah Anda Yakin Untuk Logout?"
+    if(confirm){
+      document.getElementById('logout-form').submit();
+    }
+  }
+</script>
 @yield('konten_js')
 </body>
 </html>

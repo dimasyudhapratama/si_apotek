@@ -140,18 +140,16 @@ class KoreksiStokController extends Controller
                 ProdukStokDetail::updateOrCreate($where, $data_detail_stok);
                 
             }
+        }        
 
-            //Return Ajax
-            $return_data = [
-                'status' => 'success',
-                'invoice_number' => $koreksi_stok->id
+        //Return Ajax
+        $return_data = [
+            'status' => 'success',
+            'invoice_number' => $koreksi_stok->id
 
-            ];
-            return $return_data;
-            
-
-            
-        }
+        ];
+        return $return_data;
+        
     }
 
 }

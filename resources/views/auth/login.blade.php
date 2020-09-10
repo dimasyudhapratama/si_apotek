@@ -7,7 +7,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Forecasting Least Square</title>
+        <title>SI Apotek</title>
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
@@ -30,7 +30,7 @@
                             </div>
                             
                             <div class="card">
-                                <div class="card-header text-center">Login - Forecasting Least Square</div>
+                                <div class="card-header text-center">Login - SI Apotek</div>
 
                                 <div class="card-body">
 
